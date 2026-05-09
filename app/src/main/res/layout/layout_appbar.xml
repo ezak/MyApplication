@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <!-- The AppBarLayout now contains the CollapsingToolbarLayout, the Toolbar, and the TabLayout -->
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!-- This is the collapsing part of the header -->
+<com.google.android.material.appbar.CollapsingToolbarLayout
+    style="?attr/collapsingToolbarLayoutLargeStyle"
+    android:id="@+id/collapsing_toolbar_layout"
+    android:layout_width="match_parent"
+    app:layout_scrollEffect="compress"
+    android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+    <!-- Your custom balance layout remains here -->
+    <include layout="@layout/layout_stats"/>
+
+</com.google.android.material.appbar.CollapsingToolbarLayout>
+
+<!-- The Toolbar remains as a direct child of AppBarLayout -->
+<com.google.android.material.appbar.MaterialToolbar
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:id="@+id/toolbar"
+    app:layout_scrollFlags="scroll|enterAlways|snap"
+    app:navigationIcon="@drawable/baseline_menu_24"
+    app:title="@string/app_name"/>
+
+<!-- The TabLayout is added here to appear below the Toolbar -->
+<com.google.android.material.tabs.TabLayout
+    android:id="@+id/tab_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:tabMode="scrollable"/>
+
+</com.google.android.material.appbar.AppBarLayout>

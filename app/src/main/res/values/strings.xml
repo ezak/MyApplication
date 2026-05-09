@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">My Application</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="core_operations">Core Operations (Insurance &amp; Benefits)</string>
+    <string name="social_protection">Social Protection</string>
+    <string name="insurees_and_policies">Insurees and Policies</string>
+    <string name="claims">Claims</string>
+
+    <string name="monitoring_oversight">Monitoring &amp; Oversight</string>
+    <string name="dashboards">Dashboards</string>
+    <string name="tasks_management">Tasks Management</string>
+
+    <string name="governance_support">Governance &amp; Support</string>
+    <string name="legal_and_finance">Legal and Finance</string>
+    <string name="grievance">Grievance</string>
+
+    <string name="system_administration">System Administration</string>
+    <string name="administration">Administration</string>
+    <string name="tools">Tools</string>
+    <string name="profile">Profile</string>
 </resources>
