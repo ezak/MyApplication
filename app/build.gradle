@@ -93,6 +93,9 @@ dependencies {
     //noinspection UseTomlInstead
     testImplementation "androidx.room:room-testing:2.8.4"
 
+    //noinspection UseTomlInstead
+    implementation 'com.nimbusds:nimbus-jose-jwt:10.9'
+
     testImplementation libs.junit
     androidTestImplementation libs.espresso.core
     androidTestImplementation libs.ext.junit
