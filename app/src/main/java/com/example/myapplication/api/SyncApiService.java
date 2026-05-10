@@ -1,4 +1,5 @@
 package com.example.myapplication.api;
 
-public class SyncApiService {
+public interface SyncApiService {
+
 }

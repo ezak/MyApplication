@@ -1,26 +1,18 @@
 package com.example.myapplication.ui;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.example.myapplication.R;
-import com.example.myapplication.ui.claim.ClaimFragment;
-import com.example.myapplication.utils.ViewUtil;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.navigation.NavigationView;
+import com.example.myapplication.model.Category;
+import com.example.myapplication.ui.claim.HealthFacilityClaimFragment;
+import com.example.myapplication.ui.claim.ReviewsFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,14 +27,6 @@ public class MainFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    private final OnBackPressedCallback drawerOnBackPressedCallback =
-            new OnBackPressedCallback(/* enabled= */ false) {
-                @Override
-                public void handleOnBackPressed() {
-                    drawerLayout.closeDrawers();
-                }
-            };
-
     public static MainFragment newInstance() {
         return new MainFragment();
     }
@@ -56,12 +40,32 @@ public class MainFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mainViewModel.getAllCategoriesLive().observe(getViewLifecycleOwner(), categories -> {
+            for(Category category : categories) {
+                Log.e(TAG, "onChanged: " + category.getName() );
+            }
+        });
     }
 
 
     @Override
     protected int getLayout() {
         return R.layout.fragment_main;
+    }
+
+
+    @Override
+    protected Fragment getCurrentFragment(int position) {
+        switch (position) {
+            case 0:
+                return HealthFacilityClaimFragment.newInstance("", "");
+            default:
+                return ReviewsFragment.newInstance("", "");
+        }
+    }
+
+    @Override
+    protected int getPagerItemCount() {
+        return mainViewModel.getSubCategories().size();
     }
 }

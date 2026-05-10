@@ -1,21 +1,50 @@
-package com.example.myapplication.database.dao.repo;
+package com.example.myapplication.database.repo;
 
-import android.content.Context;
+import android.app.Application;
 
 import androidx.annotation.NonNull;
 
 import com.example.myapplication.database.AppDatabase;
+import com.example.myapplication.model.Category;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CategoryRepository {
     private static final String TAG = "CategoryRepository";
     private final AppDatabase db;
-    public CategoryRepository(@NonNull AppDatabase db) {
-        this.db = db;
+    public CategoryRepository(@NonNull Application application) {
+        this.db = AppDatabase.getInstance(application);
     }
 
-    public void getAllCategories() {
+    private List<Category> filterActiveCategories(List<Category> categories) {
+        return categories.stream()
+                .filter(Category::isActive)
+                .collect(Collectors.toList());
+    }
 
+    public Flowable<List<Category>> getAllActiveCategories() {
+        return db.categoriesDao()
+                .observeAllCategories()
+                .map(this::filterActiveCategories)
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Flowable<List<Category>> getAllActiveSubCategories(int parent) {
+        return db.categoriesDao()
+                .observeAllSubCategories(parent)
+                .map(this::filterActiveCategories)
+                .subscribeOn(Schedulers.io());
     }
 
 
+    public Flowable<List<Category>> getAllActiveSubCategories(String parent) {
+        return db.categoriesDao()
+                .observeAllSubCategories(parent)
+                .map(this::filterActiveCategories)
+                .subscribeOn(Schedulers.io());
+    }
 }
