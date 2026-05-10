@@ -1,54 +1,36 @@
-package com.example.myapplication.ui.auth;
+package com.example.myapplication.api;
 
 import android.util.Log;
-import android.widget.Toast;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.myapplication.api.AuthApiService;
-import com.example.myapplication.api.ExponentialBackoffRetry;
+import com.example.myapplication.api.model.ApiResponse;
+import com.example.myapplication.ui.RepositoryHelper;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AuthViewModel extends ViewModel {
-    private static final String TAG = "AuthViewModel";
+public class ApiServiceViewModel extends ViewModel {
+    private static final String TAG = "ApiServiceViewModel";
 
     // Container for all Rx subscriptions to prevent memory leaks
     private final CompositeDisposable disposables = new CompositeDisposable();
-    private AuthApiService authApiService;
+    private final MutableLiveData<Resource<ApiResponse>> dataState = new MutableLiveData<>();
+    private final ApiServiceRepository apiServiceRepository;
 
-    public AuthViewModel() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.example.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                .build();
-
-        authApiService = retrofit.create(AuthApiService.class);
+    public ApiServiceViewModel() {
+        apiServiceRepository = new ApiServiceRepository();
     }
 
-    private void fetchDataFromServer() {
-        disposables.add(authApiService.fetchData()
-                .retryWhen(new ExponentialBackoffRetry(3, 2))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(authApiResponse -> {
-                    Log.e(TAG, "fetchDataFromServer: " + authApiResponse );
-                }, exception -> {
-                    Log.e(TAG, "fetchDataFromServer: " + exception.getLocalizedMessage() );
-                }, () -> {
-                    Log.e(TAG, "fetchDataFromServer: "  );
-                })
-        );
+    public ApiServiceViewModel(Integer x) {
+        apiServiceRepository = new ApiServiceRepository();
     }
 
     public void login() {
-        disposables.add(authApiService.fetchData()
+        disposables.add(RepositoryHelper.getApiServiceRepository().login()
                 .retryWhen(new ExponentialBackoffRetry(3, 2))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -63,9 +45,37 @@ public class AuthViewModel extends ViewModel {
     }
 
     public void register() {
-
+        disposables.add(RepositoryHelper.getApiServiceRepository().register()
+                .retryWhen(new ExponentialBackoffRetry(3, 2))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(authApiResponse -> {
+                    Log.e(TAG, "fetchDataFromServer: " + authApiResponse );
+                }, exception -> {
+                    Log.e(TAG, "fetchDataFromServer: " + exception.getLocalizedMessage() );
+                }, () -> {
+                    Log.e(TAG, "fetchDataFromServer: "  );
+                })
+        );
     }
 
+    public void fetchData() {
+        dataState.setValue(Resource.loading());
+
+        disposables.add(RepositoryHelper.getApiServiceRepository().fetchData().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(apiResponse -> {
+                    dataState.setValue(Resource.success(apiResponse));
+                }, exception -> {
+                    dataState.setValue(Resource.error(exception.getLocalizedMessage()));
+                }, () -> {
+                    Log.e(TAG, "fetchData: completed " );
+                }));
+    }
+
+    // Expose LiveData to the Activity
+    public LiveData<Resource<ApiResponse>> getDataLive() {
+        return dataState;
+    }
 
     @Override
     protected void onCleared() {

@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.model.Stage;
-import com.example.myapplication.model.Wizard;
+import com.example.myapplication.process.Stage;
+import com.example.myapplication.process.Wizard;
 import com.google.android.material.button.MaterialButton;
 
 public class HealthFacilityClaimFragment extends Fragment {
@@ -76,8 +76,8 @@ public class HealthFacilityClaimFragment extends Fragment {
 
         stage = new Stage();
         stage.name = "Second Stage";
-        wizard.stages.add(stage)
-        ;
+        wizard.stages.add(stage);
+
         stage = new Stage();
         stage.name = "Third Stage";
         wizard.stages.add(stage);

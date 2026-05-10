@@ -3,28 +3,25 @@ package com.example.myapplication.ui;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.myapplication.R;
-import com.example.myapplication.database.repo.CategoryRepository;
-import com.example.myapplication.model.Category;
+import com.example.myapplication.api.ApiServiceViewModel;
+import com.example.myapplication.database.DatabaseViewModel;
+import com.example.myapplication.database.model.Category;
 import com.example.myapplication.ui.claim.ClaimFragment;
 import com.example.myapplication.ui.insureesandpolicies.InsureesAndPoliciesFragment;
 import com.example.myapplication.ui.socialprotection.SocialProtectionFragment;
@@ -41,7 +38,8 @@ public abstract class BaseFragment extends Fragment {
     private DrawerLayout drawerLayout;
     private MaterialToolbar toolbar;
 
-    protected MainViewModel mainViewModel;
+    protected DatabaseViewModel databaseViewModel;
+    protected ApiServiceViewModel apiServiceViewModel;
 
     protected abstract int getLayout();
     protected abstract Fragment getCurrentFragment(int position);
@@ -58,8 +56,16 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainViewModelFactory factory = new MainViewModelFactory(new CategoryRepository(requireActivity().getApplication()));
-        mainViewModel = new ViewModelProvider(requireActivity(), factory).get(MainViewModel.class);
+
+        ViewModelFactory factory = new ViewModelFactory();
+
+        factory.register(DatabaseViewModel.class, () -> new DatabaseViewModel(RepositoryHelper.getDatabaseRepository(requireActivity().getApplication())));
+        factory.register(ApiServiceViewModel.class, () -> new ApiServiceViewModel(0));
+
+        ViewModelProvider provider = new ViewModelProvider(this, factory);
+
+        databaseViewModel = provider.get(DatabaseViewModel.class);
+        apiServiceViewModel = provider.get(ApiServiceViewModel.class);
     }
 
     @Nullable
@@ -115,7 +121,6 @@ public abstract class BaseFragment extends Fragment {
                         ClaimFragment.newInstance(String.valueOf(item.getTitle())),
                         R.id.main_activity_fragment_container,
                         "main_fragment", false);
-                Toast.makeText(requireActivity(), item.getTitle(), Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_dashboards) {
                 Toast.makeText(requireActivity(), item.getTitle(), Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_tasks_management) {
@@ -166,19 +171,19 @@ public abstract class BaseFragment extends Fragment {
         ViewPager2 viewPager2 = mView.findViewById(R.id.pager);
         viewPager2.setAdapter(viewPagerAdapter);
 
-        mainViewModel.getAllSubCategoriesLive(parent).observe(getViewLifecycleOwner(), categories -> {
+        databaseViewModel.getAllSubCategoriesLive(parent).observe(getViewLifecycleOwner(), categories -> {
             if (categories == null) return;
 
-            mainViewModel.setSubCategories(categories);
+            databaseViewModel.setSubCategories(categories);
 
-            mainViewModel.getCurrentTabTitles().clear();
-            for (Category category : mainViewModel.getSubCategories()) {
-                mainViewModel.addToCurrentTabTitles(category.getName());
+            databaseViewModel.getCurrentTabTitles().clear();
+            for (Category category : databaseViewModel.getSubCategories()) {
+                databaseViewModel.addToCurrentTabTitles(category.getName());
             }
 
             TabLayout tabLayout = mView.findViewById(R.id.tab_layout);
             new TabLayoutMediator(tabLayout, viewPager2, (tab, pos) ->
-                    tab.setText(mainViewModel.getCurrentTabTitles().get(pos))
+                    tab.setText(databaseViewModel.getCurrentTabTitles().get(pos))
             ).attach();
 
             viewPagerAdapter.notifyDataSetChanged();

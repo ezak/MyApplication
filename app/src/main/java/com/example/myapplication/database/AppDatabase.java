@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.myapplication.database.dao.CategoryDao;
-import com.example.myapplication.model.Category;
+import com.example.myapplication.database.model.Category;
 
 
 @Database(entities = {Category.class}, version = 1)

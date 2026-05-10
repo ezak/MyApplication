@@ -1,11 +1,10 @@
-package com.example.myapplication.database.repo;
+package com.example.myapplication.database;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.example.myapplication.database.AppDatabase;
-import com.example.myapplication.model.Category;
+import com.example.myapplication.database.model.Category;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,10 +12,11 @@ import java.util.stream.Collectors;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class CategoryRepository {
-    private static final String TAG = "CategoryRepository";
+public class DatabaseRepository {
+    private static final String TAG = "DatabaseRepository";
+
     private final AppDatabase db;
-    public CategoryRepository(@NonNull Application application) {
+    public DatabaseRepository(@NonNull Application application) {
         this.db = AppDatabase.getInstance(application);
     }
 
@@ -39,7 +39,6 @@ public class CategoryRepository {
                 .map(this::filterActiveCategories)
                 .subscribeOn(Schedulers.io());
     }
-
 
     public Flowable<List<Category>> getAllActiveSubCategories(String parent) {
         return db.categoriesDao()

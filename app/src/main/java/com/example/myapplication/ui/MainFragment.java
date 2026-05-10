@@ -10,7 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
-import com.example.myapplication.model.Category;
+import com.example.myapplication.database.model.Category;
 import com.example.myapplication.ui.claim.HealthFacilityClaimFragment;
 import com.example.myapplication.ui.claim.ReviewsFragment;
 
@@ -40,7 +40,7 @@ public class MainFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mainViewModel.getAllCategoriesLive().observe(getViewLifecycleOwner(), categories -> {
+        databaseViewModel.getAllCategoriesLive().observe(getViewLifecycleOwner(), categories -> {
             for(Category category : categories) {
                 Log.e(TAG, "onChanged: " + category.getName() );
             }
@@ -66,6 +66,6 @@ public class MainFragment extends BaseFragment {
 
     @Override
     protected int getPagerItemCount() {
-        return mainViewModel.getSubCategories().size();
+        return databaseViewModel.getSubCategories().size();
     }
 }
