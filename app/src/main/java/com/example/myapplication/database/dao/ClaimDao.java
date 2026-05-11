@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.example.myapplication.database.model.Claim;
@@ -23,6 +24,10 @@ public interface ClaimDao {
     @Update
     Single<Integer> update(Claim claim);
 
+    @Update
+    @Transaction
+    Single<Integer> update(List<Claim> claims);
+
     @Delete
     Single<Integer> delete(Claim claim);
 
@@ -31,4 +36,7 @@ public interface ClaimDao {
 
     @Query("SELECT * FROM claims WHERE id = :id")
     Flowable<Claim> getClaimById(int id);
+
+    @Query("SELECT * FROM claims WHERE is_synced = :is_synced")
+    Flowable<List<Claim>> getUnSyncedClaims(boolean is_synced);
 }
