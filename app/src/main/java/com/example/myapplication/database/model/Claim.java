@@ -55,11 +55,11 @@ public class Claim {
         this.status = status;
     }
 
-    public boolean isSynced() {
+    public boolean isIs_synced() {
         return is_synced;
     }
 
-    public void isSynced(boolean synced) {
-        this.is_synced = synced;
+    public void setIs_synced(boolean is_synced) {
+        this.is_synced = is_synced;
     }
 }
