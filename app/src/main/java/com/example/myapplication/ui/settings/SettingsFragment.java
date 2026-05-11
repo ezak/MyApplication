@@ -100,7 +100,6 @@ public class SettingsFragment extends Fragment implements LocaleDialogFragment.L
         TextView languageSummary = view.findViewById(R.id.setting_language_summary);
 
         languageContainer.setOnClickListener(v -> {
-            Log.e(TAG, "onClick: " );
             LocaleDialogFragment fragment = LocaleDialogFragment.newInstance("", "");
             fragment.setListener(SettingsFragment.this);
             ViewUtil.showChildDialog(this, fragment, "settings_fragment");
@@ -108,7 +107,6 @@ public class SettingsFragment extends Fragment implements LocaleDialogFragment.L
 
         settingsViewModel.getLocale();
         settingsViewModel.getLocaleLive().observe(getViewLifecycleOwner(), s -> {
-            Log.e(TAG, "onChanged: " + s );
             settingsViewModel.currentLocale = s;
             languageSummary.setText(s);
         });

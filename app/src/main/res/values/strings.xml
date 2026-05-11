@@ -24,19 +24,17 @@
     <string name="previous">Previous</string>
     <string name="next">Next</string>
 
-
-    <string-array name="language_names">
-        <item>English</item>
-        <item>Français</item>
-        <item>Español</item>
-        <item>Amharic</item>
-    </string-array>
+    <string name="settings">Settings</string>
+    <string name="app_language">App Language</string>
+    <string name="select_language">Select Language</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
 
     <string-array name="language_codes">
+        <item>am</item>
         <item>en</item>
         <item>fr</item>
         <item>es</item>
-        <item>am</item>
     </string-array>
 
 </resources>

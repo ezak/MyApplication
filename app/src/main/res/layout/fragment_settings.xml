@@ -18,7 +18,7 @@
             android:paddingEnd="16dp"
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
-            android:text="@string/app_name"
+            android:text="@string/settings"
             android:textColor="?attr/colorPrimary"
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -52,7 +52,7 @@
                     android:id="@+id/setting_language_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="App Language"
+                    android:text="@string/app_language"
                     android:textAppearance="?android:attr/textAppearanceListItem"
                     android:textColor="?android:attr/textColorPrimary" />
 
@@ -70,7 +70,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/baseline_keyboard_arrow_right_24"
                 android:layout_marginStart="8dp"
-                android:contentDescription="Go Next"
+                android:contentDescription="@string/next"
                 app:tint="?android:attr/textColorSecondary" />
         </LinearLayout>
 
@@ -110,7 +110,7 @@
                     android:id="@+id/setting_account_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Current Account"
+                    android:text="@string/app_name"
                     android:textAppearance="?android:attr/textAppearanceListItem"
                     android:textColor="?android:attr/textColorPrimary" />
 
@@ -128,7 +128,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/baseline_keyboard_arrow_right_24"
                 android:layout_marginStart="8dp"
-                android:contentDescription="Go Next"
+                android:contentDescription="@string/next"
                 app:tint="?android:attr/textColorSecondary" />
         </LinearLayout>
 

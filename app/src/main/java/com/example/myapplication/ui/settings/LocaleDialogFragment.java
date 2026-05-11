@@ -116,11 +116,11 @@ public class LocaleDialogFragment extends DialogFragment {
 
         return new MaterialAlertDialogBuilder(requireContext())
                 .setView(view)
-                .setTitle("Confirm Action")
-                .setPositiveButton("Confirm", (dialog, which) -> {
+                .setTitle(getResources().getString(R.string.select_language))
+                .setPositiveButton(getResources().getString(R.string.done), (dialog, which) -> {
                     // Handle confirmation
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> {
+                .setNegativeButton(getResources().getString(R.string.cancel), (dialog, which) -> {
                     // Handle cancellation
                 })
                 .create();
