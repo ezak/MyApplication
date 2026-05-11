@@ -38,8 +38,6 @@ public class ApiServiceViewModel extends ViewModel {
                     Log.e(TAG, "fetchDataFromServer: " + authApiResponse );
                 }, exception -> {
                     Log.e(TAG, "fetchDataFromServer: " + exception.getLocalizedMessage() );
-                }, () -> {
-                    Log.e(TAG, "fetchDataFromServer: "  );
                 })
         );
     }
@@ -53,8 +51,6 @@ public class ApiServiceViewModel extends ViewModel {
                     Log.e(TAG, "fetchDataFromServer: " + authApiResponse );
                 }, exception -> {
                     Log.e(TAG, "fetchDataFromServer: " + exception.getLocalizedMessage() );
-                }, () -> {
-                    Log.e(TAG, "fetchDataFromServer: "  );
                 })
         );
     }
@@ -67,8 +63,6 @@ public class ApiServiceViewModel extends ViewModel {
                     dataState.setValue(Resource.success(apiResponse));
                 }, exception -> {
                     dataState.setValue(Resource.error(exception.getLocalizedMessage()));
-                }, () -> {
-                    Log.e(TAG, "fetchData: completed " );
                 }));
     }
 

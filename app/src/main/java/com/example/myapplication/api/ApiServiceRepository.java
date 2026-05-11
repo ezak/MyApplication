@@ -4,6 +4,7 @@ import com.example.myapplication.BuildConfig;
 import com.example.myapplication.api.model.ApiResponse;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,19 +22,19 @@ public class ApiServiceRepository {
         apiService = retrofit.create(ApiService.class);
     }
 
-    public Observable<ApiResponse> login() {
+    public Single<ApiResponse> login() {
         return apiService.login();
     }
 
-    public Observable<ApiResponse> register() {
+    public Single<ApiResponse> register() {
         return apiService.register();
     }
 
-    public Observable<ApiResponse> fetchData() {
+    public Single<ApiResponse> fetchData() {
         return apiService.fetchData();
     }
 
-    public Observable<ApiResponse> postData() {
+    public Single<ApiResponse> postData() {
         return apiService.postData();
     }
 
