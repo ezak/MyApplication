@@ -25,6 +25,7 @@ import com.example.myapplication.database.DatabaseViewModel;
 import com.example.myapplication.database.model.Category;
 import com.example.myapplication.ui.claim.ClaimFragment;
 import com.example.myapplication.ui.insureesandpolicies.InsureesAndPoliciesFragment;
+import com.example.myapplication.ui.settings.SettingsFragment;
 import com.example.myapplication.ui.socialprotection.SocialProtectionFragment;
 import com.example.myapplication.utils.ViewUtil;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -88,7 +89,11 @@ public abstract class BaseFragment extends Fragment {
         toolbar.inflateMenu(R.menu.default_appbar_menu);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.settings) {
-                Toast.makeText(requireActivity(), item.getTitle(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(requireActivity(), item.getTitle(), Toast.LENGTH_SHORT).show();
+                ViewUtil.startFragment(requireActivity(),
+                        SettingsFragment.newInstance("", ""),
+                        R.id.main_activity_fragment_container,
+                        "main_fragment", true);
                 return true;
             } else {
                 return false;
