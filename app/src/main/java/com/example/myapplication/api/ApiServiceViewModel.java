@@ -7,7 +7,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.api.model.ApiResponse;
+import com.example.myapplication.model.DummyModel;
 import com.example.myapplication.ui.RepositoryHelper;
+
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -18,7 +21,7 @@ public class ApiServiceViewModel extends ViewModel {
 
     // Container for all Rx subscriptions to prevent memory leaks
     private final CompositeDisposable disposables = new CompositeDisposable();
-    private final MutableLiveData<Resource<ApiResponse>> dataState = new MutableLiveData<>();
+    private final MutableLiveData<Resource<List<DummyModel>>> dataState = new MutableLiveData<>();
     private final ApiServiceRepository apiServiceRepository;
 
     public ApiServiceViewModel() {
@@ -67,7 +70,7 @@ public class ApiServiceViewModel extends ViewModel {
     }
 
     // Expose LiveData to the Activity
-    public LiveData<Resource<ApiResponse>> getDataLive() {
+    public LiveData<Resource<List<DummyModel>>> getDataLive() {
         return dataState;
     }
 

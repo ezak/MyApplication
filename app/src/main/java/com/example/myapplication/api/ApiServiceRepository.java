@@ -2,6 +2,9 @@ package com.example.myapplication.api;
 
 import com.example.myapplication.BuildConfig;
 import com.example.myapplication.api.model.ApiResponse;
+import com.example.myapplication.model.DummyModel;
+
+import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
@@ -30,7 +33,7 @@ public class ApiServiceRepository {
         return apiService.register();
     }
 
-    public Single<ApiResponse> fetchData() {
+    public Single<List<DummyModel>> fetchData() {
         return apiService.fetchData();
     }
 

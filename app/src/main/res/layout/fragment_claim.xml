@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.myapplication.ui.MainFragment"
     android:id="@+id/main_container">
 
-    <include layout="@layout/layout_appbar"/>
+    <include layout="@layout/layout_appbar_no_collapse"/>
 
     <!-- The RecyclerView is replaced by a ViewPager2. -->
     <!-- The key is to apply the same app:layout_behavior to the ViewPager2 -->
@@ -17,4 +18,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

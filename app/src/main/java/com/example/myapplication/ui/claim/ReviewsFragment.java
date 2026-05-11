@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,13 +18,20 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.api.ApiServiceViewModel;
+import com.example.myapplication.api.Resource;
+import com.example.myapplication.api.model.ApiResponse;
+import com.example.myapplication.model.DummyModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ReviewsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReviewsFragment extends Fragment {
+public class ReviewsFragment extends Fragment implements RecyclerAdapter.Listener {
 
     private static final String TAG = "ReviewsFragment";
 
@@ -34,7 +43,7 @@ public class ReviewsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private View view;
     private ApiServiceViewModel apiServiceViewModel;
 
     public ReviewsFragment() {
@@ -74,15 +83,23 @@ public class ReviewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reviews, container, false);
+        return view = inflater.inflate(R.layout.fragment_reviews, container, false);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+
+        RecyclerAdapter adapter = new RecyclerAdapter(requireActivity(), this);
+        recyclerView.setAdapter(adapter);
+
         TextView status = view.findViewById(R.id.status);
+
+        FloatingActionButton fab = view.findViewById(R.id.fab_add);
 
         apiServiceViewModel.fetchData();
 
@@ -94,7 +111,10 @@ public class ReviewsFragment extends Fragment {
                     break;
 
                 case SUCCESS:
-                    status.setText("Data Loaded");
+                    //status.setText("Data Loaded"  + resource.data);
+                    status.setVisibility(View.GONE);
+                    adapter.setDummyModelList(resource.data);
+                    adapter.notifyDataSetChanged();
                     // if (progressBar != null) progressBar.setVisibility(View.GONE);
                     // Toast.makeText(this, "Data Loaded Successfully!", Toast.LENGTH_SHORT).show();
                     // Update your UI with resource.data
@@ -102,6 +122,7 @@ public class ReviewsFragment extends Fragment {
 
                 case ERROR:
                     status.setText("Error loading data " + resource.message);
+                    Snackbar.make(view, resource.message, Snackbar.LENGTH_SHORT).show();
                     // if (progressBar != null) progressBar.setVisibility(View.GONE);
                     // Toast.makeText(this, "Error: " + resource.message, Toast.LENGTH_LONG).show();
                     break;
@@ -109,5 +130,8 @@ public class ReviewsFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onItemClickedListener() {
 
+    }
 }
