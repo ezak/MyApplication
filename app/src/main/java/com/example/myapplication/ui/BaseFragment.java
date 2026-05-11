@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+import androidx.work.WorkManager;
 
 import com.example.myapplication.R;
 import com.example.myapplication.api.ApiServiceViewModel;
@@ -59,7 +60,8 @@ public abstract class BaseFragment extends Fragment {
 
         ViewModelFactory factory = new ViewModelFactory();
 
-        factory.register(DatabaseViewModel.class, () -> new DatabaseViewModel(RepositoryHelper.getDatabaseRepository(requireActivity().getApplication())));
+        factory.register(DatabaseViewModel.class, () -> new DatabaseViewModel(RepositoryHelper
+                .getDatabaseRepository(requireActivity().getApplication(), WorkManager.getInstance(requireActivity()))));
         factory.register(ApiServiceViewModel.class, () -> new ApiServiceViewModel(0));
 
         ViewModelProvider provider = new ViewModelProvider(this, factory);
