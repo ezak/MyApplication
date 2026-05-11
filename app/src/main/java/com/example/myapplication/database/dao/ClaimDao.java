@@ -27,7 +27,7 @@ public interface ClaimDao {
     Single<Integer> delete(Claim claim);
 
     @Query("SELECT * FROM claims ORDER BY is_synced DESC")
-    Single<List<Claim>> getAllClaims();
+    Flowable<List<Claim>> getAllClaims();
 
     @Query("SELECT * FROM claims WHERE id = :id")
     Flowable<Claim> getClaimById(int id);
