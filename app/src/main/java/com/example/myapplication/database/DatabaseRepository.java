@@ -10,6 +10,7 @@ import com.example.myapplication.database.model.Category;
 import com.example.myapplication.database.model.Claim;
 
 import java.util.List;
+import java.util.concurrent.Flow;
 import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.core.Flowable;
@@ -73,7 +74,7 @@ public class DatabaseRepository {
                 .subscribeOn(Schedulers.io());
     }
 
-    public Single<List<Claim>> getAllClaims() {
+    public Flowable<List<Claim>> getAllClaims() {
         return db.claimDao()
                 .getAllClaims()
                 .subscribeOn(Schedulers.io());
