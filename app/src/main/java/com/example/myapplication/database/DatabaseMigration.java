@@ -47,7 +47,7 @@ class DatabaseMigration
     static Migration[] getMigrations(@NonNull Context appContext /* not used */)
     {
         return new Migration[] {
-
+            MIGRATION_1_2
         };
     }
 
@@ -56,6 +56,19 @@ class DatabaseMigration
         public void migrate(@NonNull SupportSQLiteDatabase database)
         {
 
+        }
+    };
+
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            // Creating the 'claims' table
+            database.execSQL("CREATE TABLE IF NOT EXISTS `claims` (" +
+                    "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "`policy_number` TEXT, " +
+                    "`claim_amount` REAL NOT NULL, " +
+                    "`status` TEXT, " +
+                    "`is_synced` INTEGER NOT NULL DEFAULT 0)");
         }
     };
 }
