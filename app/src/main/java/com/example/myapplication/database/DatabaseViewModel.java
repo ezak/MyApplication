@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.database.model.Category;
 import com.example.myapplication.database.model.Claim;
-import com.example.myapplication.ui.RepositoryHelper;
 
 import java.util.ArrayList;
 import java.util.List;
