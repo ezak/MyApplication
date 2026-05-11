@@ -9,18 +9,19 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.myapplication.database.dao.CategoryDao;
+import com.example.myapplication.database.dao.ClaimDao;
 import com.example.myapplication.database.model.Category;
+import com.example.myapplication.database.model.Claim;
 
 
-@Database(entities = {Category.class}, version = 1)
-
-
+@Database(entities = {Category.class, Claim.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "application.db";
 
     private static volatile AppDatabase INSTANCE;
 
     public abstract CategoryDao categoriesDao();
+    public abstract ClaimDao claimDao();
 
 
     public static AppDatabase getInstance(@NonNull Context appContext)
