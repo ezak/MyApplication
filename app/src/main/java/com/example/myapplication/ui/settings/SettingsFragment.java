@@ -31,7 +31,7 @@ import com.example.myapplication.utils.ViewUtil;
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends Fragment implements LocaleDialogFragment.Listener {
     private static final String TAG = "SettingsFragment";
 
     // TODO: Rename parameter arguments, choose names that match
@@ -101,15 +101,23 @@ public class SettingsFragment extends Fragment {
 
         languageContainer.setOnClickListener(v -> {
             Log.e(TAG, "onClick: " );
-            ViewUtil.showDialog(requireActivity(), LocaleDialogFragment.newInstance("", ""), "");
+            LocaleDialogFragment fragment = LocaleDialogFragment.newInstance("", "");
+            fragment.setListener(SettingsFragment.this);
+            ViewUtil.showChildDialog(this, fragment, "settings_fragment");
         });
 
         settingsViewModel.getLocale();
         settingsViewModel.getLocaleLive().observe(getViewLifecycleOwner(), s -> {
             Log.e(TAG, "onChanged: " + s );
+            settingsViewModel.currentLocale = s;
             languageSummary.setText(s);
         });
     }
 
+    @Override
+    public void onLanguageSelected(String languageCode) {
+        Log.e(TAG, "onLanguageSelected: " + languageCode );
 
+        settingsViewModel.updateLocale(languageCode);
+    }
 }

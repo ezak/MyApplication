@@ -22,6 +22,8 @@ public class SettingsViewModel extends ViewModel {
     private final MutableLiveData<Preferences> preferencesLive = new MutableLiveData<>();
     private final SettingsRepository settingsRepository;
 
+    public String currentLocale;
+
     public SettingsViewModel(SettingsRepository settingsRepository) {
         this.settingsRepository = settingsRepository;
     }
