@@ -3,13 +3,17 @@ package com.example.myapplication.database;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.room.Delete;
+import androidx.room.Query;
 
 import com.example.myapplication.database.model.Category;
+import com.example.myapplication.database.model.Claim;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DatabaseRepository {
@@ -44,6 +48,40 @@ public class DatabaseRepository {
         return db.categoriesDao()
                 .observeAllSubCategories(parent)
                 .map(this::filterActiveCategories)
+                .subscribeOn(Schedulers.io());
+    }
+
+    /*
+     * Claim related
+     * */
+
+    public Single<Long> insert(Claim claim) {
+        return db.claimDao()
+                .insert(claim)
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Single<Integer> update(Claim claim) {
+        return db.claimDao()
+                .update(claim)
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Single<Integer> delete(Claim claim) {
+        return db.claimDao()
+                .delete(claim)
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Single<List<Claim>> getAllClaims() {
+        return db.claimDao()
+                .getAllClaims()
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Flowable<Claim> getClaimById(int id) {
+        return db.claimDao()
+                .getClaimById(id)
                 .subscribeOn(Schedulers.io());
     }
 }
