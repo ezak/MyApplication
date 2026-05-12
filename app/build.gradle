@@ -101,6 +101,9 @@ dependencies {
     //noinspection UseTomlInstead
     implementation "androidx.work:work-rxjava3:2.11.2"
 
+    //noinspection UseTomlInstead
+    implementation 'com.google.android.gms:play-services-code-scanner:16.1.0'
+
 
     testImplementation libs.junit
     androidTestImplementation libs.espresso.core
