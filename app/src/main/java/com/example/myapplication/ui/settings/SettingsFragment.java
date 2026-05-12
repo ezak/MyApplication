@@ -25,6 +25,7 @@ import com.example.myapplication.settings.SettingsViewModel;
 import com.example.myapplication.ui.RepositoryHelper;
 import com.example.myapplication.ui.ViewModelFactory;
 import com.example.myapplication.utils.ViewUtil;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
@@ -100,6 +101,11 @@ public class SettingsFragment extends Fragment implements LocaleDialogFragment.L
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        MaterialToolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setTitle(getResources().getString(R.string.settings));
+        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24);
+        toolbar.setNavigationOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
 
         View languageContainer = view.findViewById(R.id.setting_language_container);
         TextView languageSummary = view.findViewById(R.id.setting_language_summary);

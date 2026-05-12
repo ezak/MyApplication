@@ -91,7 +91,7 @@ public abstract class BaseFragment extends Fragment {
 
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
-
+        toolbar.setNavigationIcon(R.drawable.baseline_menu_24);
         toolbar.inflateMenu(R.menu.default_appbar_menu);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.settings) {
