@@ -23,6 +23,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.api.ApiServiceViewModel;
 import com.example.myapplication.database.DatabaseViewModel;
 import com.example.myapplication.database.model.Category;
+import com.example.myapplication.security.JoseViewModel;
 import com.example.myapplication.ui.claim.ClaimFragment;
 import com.example.myapplication.ui.insureesandpolicies.InsureesAndPoliciesFragment;
 import com.example.myapplication.ui.settings.SettingsFragment;
@@ -42,9 +43,12 @@ public abstract class BaseFragment extends Fragment {
 
     protected DatabaseViewModel databaseViewModel;
     protected ApiServiceViewModel apiServiceViewModel;
+    protected JoseViewModel joseViewModel;
 
     protected abstract int getLayout();
+
     protected abstract Fragment getCurrentFragment(int position);
+
     protected abstract int getPagerItemCount();
 
     private final OnBackPressedCallback drawerOnBackPressedCallback =
@@ -64,11 +68,13 @@ public abstract class BaseFragment extends Fragment {
         factory.register(DatabaseViewModel.class, () -> new DatabaseViewModel(RepositoryHelper
                 .getDatabaseRepository(requireActivity().getApplication(), WorkManager.getInstance(requireActivity()))));
         factory.register(ApiServiceViewModel.class, () -> new ApiServiceViewModel(0));
+        factory.register(JoseViewModel.class, () -> new JoseViewModel(RepositoryHelper.getJoseRepository()));
 
         ViewModelProvider provider = new ViewModelProvider(this, factory);
 
         databaseViewModel = provider.get(DatabaseViewModel.class);
         apiServiceViewModel = provider.get(ApiServiceViewModel.class);
+        joseViewModel = provider.get(JoseViewModel.class);
     }
 
     @Nullable
