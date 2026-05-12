@@ -6,8 +6,12 @@
    See https://developer.android.com/about/versions/12/backup-restore
 -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
+    <!-- Exclude the SQLite databases -->
+    <exclude domain="database" path="." />
+
+    <!-- Exclude Shared Preferences (where tokens might live) -->
+    <exclude domain="sharedpref" path="." />
+
+    <!-- Exclude the entire root app directory just to be safe -->
+    <exclude domain="root" path="." />
 </full-backup-content>
