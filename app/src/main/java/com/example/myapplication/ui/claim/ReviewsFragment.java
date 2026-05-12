@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +17,9 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.api.ApiServiceViewModel;
-import com.example.myapplication.api.Resource;
-import com.example.myapplication.api.model.ApiResponse;
-import com.example.myapplication.model.DummyModel;
+import com.example.myapplication.ui.MainViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +40,7 @@ public class ReviewsFragment extends Fragment implements RecyclerAdapter.Listene
     private String mParam2;
     private View view;
     private ApiServiceViewModel apiServiceViewModel;
+    private MainViewModel mainViewModel;
 
     public ReviewsFragment() {
         // Required empty public constructor
@@ -76,6 +72,7 @@ public class ReviewsFragment extends Fragment implements RecyclerAdapter.Listene
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        mainViewModel = new ViewModelProvider(requireParentFragment()).get(MainViewModel.class);
         apiServiceViewModel = new ViewModelProvider(requireParentFragment()).get(ApiServiceViewModel.class);
     }
 
@@ -92,10 +89,38 @@ public class ReviewsFragment extends Fragment implements RecyclerAdapter.Listene
         super.onViewCreated(view, savedInstanceState);
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity());
+        recyclerView.setLayoutManager(layoutManager);
         RecyclerAdapter adapter = new RecyclerAdapter(requireActivity(), this);
         recyclerView.setAdapter(adapter);
+        recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                // Scroll position and offset tracking
+                int position = layoutManager.findFirstVisibleItemPosition();
+                View firstItemView = layoutManager.findViewByPosition(position);
+                if (firstItemView != null) {
+                    int offset = firstItemView.getTop() - recyclerView.getPaddingTop();
+                    // Update ViewModel with the index and the offset
+                    mainViewModel.recyclerPosition = position;
+                    mainViewModel.recyclerOffset = offset;
+                }
+
+                // lazy loading
+                /*int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                // Check if we are not currently loading and have reached the threshold
+                if (!apiServiceViewModel.isLoading()) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                        // Trigger next page fetch
+                        apiServiceViewModel.fetchNextPage();
+                    }
+                }*/
+
+            }
+        });
 
         TextView status = view.findViewById(R.id.status);
 
@@ -115,6 +140,8 @@ public class ReviewsFragment extends Fragment implements RecyclerAdapter.Listene
                     status.setVisibility(View.GONE);
                     adapter.setDummyModelList(resource.data);
                     adapter.notifyDataSetChanged();
+                    layoutManager.scrollToPositionWithOffset(mainViewModel.recyclerPosition,
+                            mainViewModel.recyclerOffset);
                     // if (progressBar != null) progressBar.setVisibility(View.GONE);
                     // Toast.makeText(this, "Data Loaded Successfully!", Toast.LENGTH_SHORT).show();
                     // Update your UI with resource.data
