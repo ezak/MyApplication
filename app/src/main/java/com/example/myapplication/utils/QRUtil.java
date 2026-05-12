@@ -3,10 +3,15 @@ package com.example.myapplication.utils;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+
 public class QRUtil {
     private static final String TAG = "QRUtil";
 
-/*    public static Bitmap strToQRC(String data, int xy) {
+    public static Bitmap strToQRC(String data, int xy) {
         BitMatrix result;
 
         try {
@@ -28,5 +33,5 @@ public class QRUtil {
         bitmap.setPixels(pixels, 0, xy, 0, 0, xy, xy);
 
         return bitmap;
-    }*/
+    }
 }
