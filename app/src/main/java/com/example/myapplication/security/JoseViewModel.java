@@ -29,8 +29,8 @@ public class JoseViewModel extends ViewModel {
                 }));
     }
 
-    public void verify(String hwKeyAlias, String user) {
-        disposables.add(joseRepository.verify(hwKeyAlias, user).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+    public void verify(String hwKeyAlias, String token) {
+        disposables.add(joseRepository.verify(hwKeyAlias, token).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 aBoolean -> {
                     Log.e(TAG, "verify: " + aBoolean);
                 },
@@ -68,8 +68,8 @@ public class JoseViewModel extends ViewModel {
                 }));
     }
 
-    public void verifyJWT(String alias, String token, String s) {
-        disposables.add(joseRepository.validateJWT(alias, token, s).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+    public void verifyJWT(String alias, String token, String issuer) {
+        disposables.add(joseRepository.validateJWT(alias, token, issuer).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 aBoolean -> {
                     Log.e(TAG, "verifyJWT: " + aBoolean);
                 },

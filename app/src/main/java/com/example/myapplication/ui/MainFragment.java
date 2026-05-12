@@ -41,8 +41,8 @@ public class MainFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         databaseViewModel.getAllCategoriesLive().observe(getViewLifecycleOwner(), categories -> {
-            for(Category category : categories) {
-                Log.e(TAG, "onChanged: " + category.getName() );
+            for (Category category : categories) {
+                Log.e(TAG, "onChanged: " + category.getName());
             }
         });
     }

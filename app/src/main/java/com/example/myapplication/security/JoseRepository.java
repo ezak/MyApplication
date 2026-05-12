@@ -94,7 +94,7 @@ public class JoseRepository {
                 .flatMap(exists -> keyPairManager.getLoadedKeyStore())
                 .flatMap(keyStore -> getSigner(keyStore, alias))
                 .flatMap(jwsSigner -> joseProvider.sign(Single.just(jwsSigner), user))
-                .subscribeOn(Schedulers.computation()).cache();
+                .subscribeOn(Schedulers.computation());
     }
 
     public Single<Boolean> verify(String alias, String token) {
@@ -128,17 +128,15 @@ public class JoseRepository {
                 .flatMap(exists -> keyPairManager.getLoadedKeyStore())
                 .flatMap(keyStore -> getSigner(keyStore, alias)) // Uses the private key
                 .flatMap(jwsSigner -> joseProvider.generateJWT(claims, Single.just(jwsSigner)))
-                .subscribeOn(Schedulers.computation())
-                .cache();
+                .subscribeOn(Schedulers.computation());
     }
 
-    public Single<Boolean> validateJWT(String alias, String token, String expectedIssuer) {
+    public Single<Boolean> validateJWT(String alias, String token, String issuer) {
         return keyPairManager.ensureKeyExists(alias)
                 .flatMap(exists -> keyPairManager.getLoadedKeyStore())
                 .flatMap(keyStore -> getVerifier(keyStore, alias)) // Uses the public key
-                .flatMap(jwsVerifier -> joseProvider.verifyJWT(token, expectedIssuer, Single.just(jwsVerifier)))
-                .subscribeOn(Schedulers.computation())
-                .cache();
+                .flatMap(jwsVerifier -> joseProvider.verifyJWT(token, issuer, Single.just(jwsVerifier)))
+                .subscribeOn(Schedulers.computation());
     }
 
 }

@@ -23,8 +23,11 @@ public class KeyPairManager {
                 keyPairGenerator.initialize(new KeyGenParameterSpec.Builder(alias,
                         KeyProperties.PURPOSE_SIGN | KeyProperties.PURPOSE_VERIFY |
                                 KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                        .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
-                        .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PSS)
+                        // PKCS1 here so RS256 works!
+                        .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PSS, KeyProperties.SIGNATURE_PADDING_RSA_PKCS1)
+                        // Samsung note 5 does not support KeyProperties.DIGEST_SHA512
+                        //.setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
+                        .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA1)
                         .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_OAEP)
                         .build());
                 keyPairGenerator.generateKeyPair();

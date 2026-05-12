@@ -49,7 +49,9 @@ public class JoseProvider {
     public Single<String> encrypt(String payload, Single<? extends JWEEncrypter> encrypterSingle) {
         return encrypterSingle.flatMap(encrypter -> Single.fromCallable(() -> {
             // Build JWE header (e.g., RSA-OAEP-256 with AES/GCM)
-            JWEHeader header = new JWEHeader(JWEAlgorithm.RSA_OAEP_256, EncryptionMethod.A256GCM);
+            // JWEHeader header = new JWEHeader(JWEAlgorithm.RSA_OAEP_256, EncryptionMethod.A256GCM);
+            // Change RSA_OAEP_256 to RSA_OAEP
+            JWEHeader header = new JWEHeader(JWEAlgorithm.RSA_OAEP, EncryptionMethod.A256GCM);
             Payload jwePayload = new Payload(payload);
 
             JWEObject jweObject = new JWEObject(header, jwePayload);
@@ -83,7 +85,7 @@ public class JoseProvider {
         })).subscribeOn(Schedulers.computation());
     }
 
-    public Single<Boolean> verifyJWT(String token, String expectedIssuer, Single<? extends JWSVerifier> verifierSingle) {
+    public Single<Boolean> verifyJWT(String token, String issuer, Single<? extends JWSVerifier> verifierSingle) {
         return verifierSingle.flatMap(verifier -> Single.fromCallable(() -> {
             SignedJWT signedJWT = SignedJWT.parse(token);
 
@@ -95,7 +97,7 @@ public class JoseProvider {
             Date now = new Date();
 
             boolean isNotExpired = claims.getExpirationTime() == null || now.before(claims.getExpirationTime());
-            boolean isCorrectIssuer = claims.getIssuer().equals(expectedIssuer);
+            boolean isCorrectIssuer = claims.getIssuer().equals(issuer);
 
             return isNotExpired && isCorrectIssuer;
         })).subscribeOn(Schedulers.computation());
