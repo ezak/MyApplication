@@ -25,6 +25,11 @@ import com.example.myapplication.settings.SettingsViewModel;
 import com.example.myapplication.ui.RepositoryHelper;
 import com.example.myapplication.ui.ViewModelFactory;
 import com.example.myapplication.utils.ViewUtil;
+import com.google.android.material.button.MaterialButton;
+import com.google.mlkit.vision.barcode.common.Barcode;
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
+import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -109,6 +114,26 @@ public class SettingsFragment extends Fragment implements LocaleDialogFragment.L
         settingsViewModel.getLocaleLive().observe(getViewLifecycleOwner(), s -> {
             settingsViewModel.currentLocale = s;
             languageSummary.setText(s);
+        });
+
+
+        GmsBarcodeScannerOptions options = new GmsBarcodeScannerOptions.Builder()
+                .setBarcodeFormats(Barcode.FORMAT_QR_CODE, Barcode.FORMAT_AZTEC)
+                .build();
+
+        GmsBarcodeScanner scanner = GmsBarcodeScanning.getClient(requireContext(), options);
+
+        MaterialButton materialButton = view.findViewById(R.id.create_account);
+        materialButton.setOnClickListener(v -> {
+            scanner.startScan()
+                    .addOnSuccessListener(barcode -> {
+                        // Result available here - No camera permission was asked!
+                        String rawValue = barcode.getRawValue();
+                        Log.e(TAG, "onViewCreated: " + rawValue );
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle error (e.g., user canceled)
+                    });
         });
     }
 
